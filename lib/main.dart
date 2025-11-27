@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'screens/explore_screen.dart';
+import 'screens/help_center_screen.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
-/// Root app widget - open ExploreScreen directly.
+/// Root app widget - open Help Center directly for preview.
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: ExploreScreen(),
+      home: const HelpCenterScreen(),
     );
   }
 }
