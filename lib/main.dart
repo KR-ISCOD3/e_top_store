@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'screens/payment_methods_screen.dart';
+import 'screens/explore_screen.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
-/// Root app widget - open PaymentMethodsScreen directly.
+/// Root app widget - open ExploreScreen directly.
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: PaymentMethodsScreen(),
+      home: ExploreScreen(),
     );
   }
 }
