@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-// import 'screens/explore_screen.dart'; 
-import 'screens/home_screen.dart';
+// import 'screens/explore_screen.dart';
+// import 'screens/home_screen.dart';
+// import 'screens/favourite_screen.dart';
+import 'screens/payment_methods_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,9 +15,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false, 
+      debugShowCheckedModeBanner: false,
       // home: ExploreScreen(),
-      home: HomeScreen(),
+      // home: HomeScreen(),
+      // home: FavouriteScreen(),
+      home: PaymentMethodsScreen(),
     );
   }
 }
