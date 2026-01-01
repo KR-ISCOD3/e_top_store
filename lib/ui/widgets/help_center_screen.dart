@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'help_center_detail_screen.dart';
-import 'ai_assistant_screen.dart';
-import 'payment_and_refunds_screen.dart';
+import '../../screens/help_center_detail_screen.dart';
+import '../../screens/ai_assistant_screen.dart';
+import '../../screens/payment_and_refunds_screen.dart';
 
 class HelpCenterScreen extends StatelessWidget {
   const HelpCenterScreen({super.key});

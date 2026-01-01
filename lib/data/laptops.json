@@ -1,0 +1,502 @@
+[
+  {
+    "id": 1,
+    "brand": "Apple",
+    "title": "Apple MacBook Air M1",
+    "description": "Apple MacBooks are known for premium build quality, long battery life, macOS optimization, and powerful Apple Silicon performance ideal for professionals and creatives. This model (MacBook Air M1) features high-quality display, fast SSD storage, modern CPU/GPU, and is suitable for daily work, study, content creation, and entertainment.",
+    "imageUrl": "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=800&q=80",
+    "price": 2153.0,
+    "oldPrice": 2436.0,
+    "rating": 3
+  },
+  {
+    "id": 2,
+    "brand": "Apple",
+    "title": "Apple MacBook Air M2",
+    "description": "Apple MacBooks are known for premium build quality, long battery life, macOS optimization, and powerful Apple Silicon performance ideal for professionals and creatives. This model (MacBook Air M2) features high-quality display, fast SSD storage, modern CPU/GPU, and is suitable for daily work, study, content creation, and entertainment.",
+    "imageUrl": "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=800&q=80",
+    "price": 2123.0,
+    "oldPrice": 2299.0,
+    "rating": 3
+  },
+  {
+    "id": 3,
+    "brand": "Apple",
+    "title": "Apple MacBook Pro 14",
+    "description": "Apple MacBooks are known for premium build quality, long battery life, macOS optimization, and powerful Apple Silicon performance ideal for professionals and creatives. This model (MacBook Pro 14) features high-quality display, fast SSD storage, modern CPU/GPU, and is suitable for daily work, study, content creation, and entertainment.",
+    "imageUrl": "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=800&q=80",
+    "price": 2591.0,
+    "oldPrice": 2949.0,
+    "rating": 4
+  },
+  {
+    "id": 4,
+    "brand": "Apple",
+    "title": "Apple MacBook Pro 16",
+    "description": "Apple MacBooks are known for premium build quality, long battery life, macOS optimization, and powerful Apple Silicon performance ideal for professionals and creatives. This model (MacBook Pro 16) features high-quality display, fast SSD storage, modern CPU/GPU, and is suitable for daily work, study, content creation, and entertainment.",
+    "imageUrl": "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=800&q=80",
+    "price": 2434.0,
+    "oldPrice": 2798.0,
+    "rating": 4
+  },
+  {
+    "id": 5,
+    "brand": "Dell",
+    "title": "Dell XPS 13",
+    "description": "Dell laptops focus on reliability and productivity, offering strong performance, excellent displays, and durability for business and everyday users. This model (XPS 13) features high-quality display, fast SSD storage, modern CPU/GPU, and is suitable for daily work, study, content creation, and entertainment.",
+    "imageUrl": "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&w=800&q=80",
+    "price": 2290.0,
+    "oldPrice": 2648.0,
+    "rating": 5
+  },
+  {
+    "id": 6,
+    "brand": "Dell",
+    "title": "Dell XPS 15",
+    "description": "Dell laptops focus on reliability and productivity, offering strong performance, excellent displays, and durability for business and everyday users. This model (XPS 15) features high-quality display, fast SSD storage, modern CPU/GPU, and is suitable for daily work, study, content creation, and entertainment.",
+    "imageUrl": "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&w=800&q=80",
+    "price": 773.0,
+    "oldPrice": 947.0,
+    "rating": 4
+  },
+  {
+    "id": 7,
+    "brand": "Dell",
+    "title": "Dell Inspiron 15",
+    "description": "Dell laptops focus on reliability and productivity, offering strong performance, excellent displays, and durability for business and everyday users. This model (Inspiron 15) features high-quality display, fast SSD storage, modern CPU/GPU, and is suitable for daily work, study, content creation, and entertainment.",
+    "imageUrl": "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&w=800&q=80",
+    "price": 772.0,
+    "oldPrice": 1127.0,
+    "rating": 3
+  },
+  {
+    "id": 8,
+    "brand": "Dell",
+    "title": "Dell Latitude 7420",
+    "description": "Dell laptops focus on reliability and productivity, offering strong performance, excellent displays, and durability for business and everyday users. This model (Latitude 7420) features high-quality display, fast SSD storage, modern CPU/GPU, and is suitable for daily work, study, content creation, and entertainment.",
+    "imageUrl": "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&w=800&q=80",
+    "price": 2491.0,
+    "oldPrice": 2701.0,
+    "rating": 5
+  },
+  {
+    "id": 9,
+    "brand": "HP",
+    "title": "HP Spectre x360",
+    "description": "HP laptops balance performance and affordability, suitable for students, professionals, and gamers with modern designs and solid hardware. This model (Spectre x360) features high-quality display, fast SSD storage, modern CPU/GPU, and is suitable for daily work, study, content creation, and entertainment.",
+    "imageUrl": "https://images.unsplash.com/photo-1611078489935-0cb964de46d6?auto=format&fit=crop&w=800&q=80",
+    "price": 2164.0,
+    "oldPrice": 2386.0,
+    "rating": 4
+  },
+  {
+    "id": 10,
+    "brand": "HP",
+    "title": "HP Pavilion 14",
+    "description": "HP laptops balance performance and affordability, suitable for students, professionals, and gamers with modern designs and solid hardware. This model (Pavilion 14) features high-quality display, fast SSD storage, modern CPU/GPU, and is suitable for daily work, study, content creation, and entertainment.",
+    "imageUrl": "https://images.unsplash.com/photo-1611078489935-0cb964de46d6?auto=format&fit=crop&w=800&q=80",
+    "price": 2148.0,
+    "oldPrice": 2526.0,
+    "rating": 3
+  },
+  {
+    "id": 11,
+    "brand": "HP",
+    "title": "HP Envy 13",
+    "description": "HP laptops balance performance and affordability, suitable for students, professionals, and gamers with modern designs and solid hardware. This model (Envy 13) features high-quality display, fast SSD storage, modern CPU/GPU, and is suitable for daily work, study, content creation, and entertainment.",
+    "imageUrl": "https://images.unsplash.com/photo-1611078489935-0cb964de46d6?auto=format&fit=crop&w=800&q=80",
+    "price": 966.0,
+    "oldPrice": 1411.0,
+    "rating": 5
+  },
+  {
+    "id": 12,
+    "brand": "HP",
+    "title": "HP Omen 16",
+    "description": "HP laptops balance performance and affordability, suitable for students, professionals, and gamers with modern designs and solid hardware. This model (Omen 16) features high-quality display, fast SSD storage, modern CPU/GPU, and is suitable for daily work, study, content creation, and entertainment.",
+    "imageUrl": "https://images.unsplash.com/photo-1611078489935-0cb964de46d6?auto=format&fit=crop&w=800&q=80",
+    "price": 874.0,
+    "oldPrice": 1262.0,
+    "rating": 3
+  },
+  {
+    "id": 13,
+    "brand": "Lenovo",
+    "title": "Lenovo ThinkPad X1 Carbon",
+    "description": "Lenovo devices are trusted for business and gaming, featuring legendary keyboards, robust builds, and excellent thermal performance. This model (ThinkPad X1 Carbon) features high-quality display, fast SSD storage, modern CPU/GPU, and is suitable for daily work, study, content creation, and entertainment.",
+    "imageUrl": "https://images.unsplash.com/photo-1603791440384-56cd371ee9a7?auto=format&fit=crop&w=800&q=80",
+    "price": 2370.0,
+    "oldPrice": 2532.0,
+    "rating": 5
+  },
+  {
+    "id": 14,
+    "brand": "Lenovo",
+    "title": "Lenovo Legion 5",
+    "description": "Lenovo devices are trusted for business and gaming, featuring legendary keyboards, robust builds, and excellent thermal performance. This model (Legion 5) features high-quality display, fast SSD storage, modern CPU/GPU, and is suitable for daily work, study, content creation, and entertainment.",
+    "imageUrl": "https://images.unsplash.com/photo-1603791440384-56cd371ee9a7?auto=format&fit=crop&w=800&q=80",
+    "price": 2575.0,
+    "oldPrice": 2777.0,
+    "rating": 4
+  },
+  {
+    "id": 15,
+    "brand": "Lenovo",
+    "title": "Lenovo IdeaPad 5",
+    "description": "Lenovo devices are trusted for business and gaming, featuring legendary keyboards, robust builds, and excellent thermal performance. This model (IdeaPad 5) features high-quality display, fast SSD storage, modern CPU/GPU, and is suitable for daily work, study, content creation, and entertainment.",
+    "imageUrl": "https://images.unsplash.com/photo-1603791440384-56cd371ee9a7?auto=format&fit=crop&w=800&q=80",
+    "price": 2073.0,
+    "oldPrice": 2451.0,
+    "rating": 5
+  },
+  {
+    "id": 16,
+    "brand": "Lenovo",
+    "title": "Lenovo Yoga Slim 7",
+    "description": "Lenovo devices are trusted for business and gaming, featuring legendary keyboards, robust builds, and excellent thermal performance. This model (Yoga Slim 7) features high-quality display, fast SSD storage, modern CPU/GPU, and is suitable for daily work, study, content creation, and entertainment.",
+    "imageUrl": "https://images.unsplash.com/photo-1603791440384-56cd371ee9a7?auto=format&fit=crop&w=800&q=80",
+    "price": 1920.0,
+    "oldPrice": 2415.0,
+    "rating": 3
+  },
+  {
+    "id": 17,
+    "brand": "Asus",
+    "title": "Asus ROG Zephyrus G14",
+    "description": "Asus laptops deliver innovation and power, from lightweight ultrabooks to high-performance gaming machines with advanced cooling systems. This model (ROG Zephyrus G14) features high-quality display, fast SSD storage, modern CPU/GPU, and is suitable for daily work, study, content creation, and entertainment.",
+    "imageUrl": "https://images.unsplash.com/photo-1593642532973-d31b6557fa68?auto=format&fit=crop&w=800&q=80",
+    "price": 2521.0,
+    "oldPrice": 2956.0,
+    "rating": 3
+  },
+  {
+    "id": 18,
+    "brand": "Asus",
+    "title": "Asus TUF Gaming F15",
+    "description": "Asus laptops deliver innovation and power, from lightweight ultrabooks to high-performance gaming machines with advanced cooling systems. This model (TUF Gaming F15) features high-quality display, fast SSD storage, modern CPU/GPU, and is suitable for daily work, study, content creation, and entertainment.",
+    "imageUrl": "https://images.unsplash.com/photo-1593642532973-d31b6557fa68?auto=format&fit=crop&w=800&q=80",
+    "price": 1938.0,
+    "oldPrice": 2371.0,
+    "rating": 3
+  },
+  {
+    "id": 19,
+    "brand": "Asus",
+    "title": "Asus VivoBook S15",
+    "description": "Asus laptops deliver innovation and power, from lightweight ultrabooks to high-performance gaming machines with advanced cooling systems. This model (VivoBook S15) features high-quality display, fast SSD storage, modern CPU/GPU, and is suitable for daily work, study, content creation, and entertainment.",
+    "imageUrl": "https://images.unsplash.com/photo-1593642532973-d31b6557fa68?auto=format&fit=crop&w=800&q=80",
+    "price": 1537.0,
+    "oldPrice": 1813.0,
+    "rating": 4
+  },
+  {
+    "id": 20,
+    "brand": "Asus",
+    "title": "Asus ZenBook 14",
+    "description": "Asus laptops deliver innovation and power, from lightweight ultrabooks to high-performance gaming machines with advanced cooling systems. This model (ZenBook 14) features high-quality display, fast SSD storage, modern CPU/GPU, and is suitable for daily work, study, content creation, and entertainment.",
+    "imageUrl": "https://images.unsplash.com/photo-1593642532973-d31b6557fa68?auto=format&fit=crop&w=800&q=80",
+    "price": 1539.0,
+    "oldPrice": 1858.0,
+    "rating": 4
+  },
+  {
+    "id": 21,
+    "brand": "Acer",
+    "title": "Acer Swift 3",
+    "description": "Acer offers value-driven laptops with competitive specs, making them popular for students, creators, and gamers on a budget. This model (Swift 3) features high-quality display, fast SSD storage, modern CPU/GPU, and is suitable for daily work, study, content creation, and entertainment.",
+    "imageUrl": "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80",
+    "price": 1183.0,
+    "oldPrice": 1407.0,
+    "rating": 3
+  },
+  {
+    "id": 22,
+    "brand": "Acer",
+    "title": "Acer Aspire 5",
+    "description": "Acer offers value-driven laptops with competitive specs, making them popular for students, creators, and gamers on a budget. This model (Aspire 5) features high-quality display, fast SSD storage, modern CPU/GPU, and is suitable for daily work, study, content creation, and entertainment.",
+    "imageUrl": "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80",
+    "price": 1064.0,
+    "oldPrice": 1516.0,
+    "rating": 3
+  },
+  {
+    "id": 23,
+    "brand": "Acer",
+    "title": "Acer Nitro 5",
+    "description": "Acer offers value-driven laptops with competitive specs, making them popular for students, creators, and gamers on a budget. This model (Nitro 5) features high-quality display, fast SSD storage, modern CPU/GPU, and is suitable for daily work, study, content creation, and entertainment.",
+    "imageUrl": "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80",
+    "price": 1986.0,
+    "oldPrice": 2154.0,
+    "rating": 4
+  },
+  {
+    "id": 24,
+    "brand": "Acer",
+    "title": "Acer Predator Helios 300",
+    "description": "Acer offers value-driven laptops with competitive specs, making them popular for students, creators, and gamers on a budget. This model (Predator Helios 300) features high-quality display, fast SSD storage, modern CPU/GPU, and is suitable for daily work, study, content creation, and entertainment.",
+    "imageUrl": "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80",
+    "price": 1179.0,
+    "oldPrice": 1511.0,
+    "rating": 3
+  },
+  {
+    "id": 25,
+    "brand": "Apple",
+    "title": "Apple MacBook Air M1",
+    "description": "Apple MacBooks are known for premium build quality, long battery life, macOS optimization, and powerful Apple Silicon performance ideal for professionals and creatives. This model (MacBook Air M1) features high-quality display, fast SSD storage, modern CPU/GPU, and is suitable for daily work, study, content creation, and entertainment.",
+    "imageUrl": "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=800&q=80",
+    "price": 1827.0,
+    "oldPrice": 2189.0,
+    "rating": 3
+  },
+  {
+    "id": 26,
+    "brand": "Apple",
+    "title": "Apple MacBook Air M2",
+    "description": "Apple MacBooks are known for premium build quality, long battery life, macOS optimization, and powerful Apple Silicon performance ideal for professionals and creatives. This model (MacBook Air M2) features high-quality display, fast SSD storage, modern CPU/GPU, and is suitable for daily work, study, content creation, and entertainment.",
+    "imageUrl": "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=800&q=80",
+    "price": 1195.0,
+    "oldPrice": 1518.0,
+    "rating": 4
+  },
+  {
+    "id": 27,
+    "brand": "Apple",
+    "title": "Apple MacBook Pro 14",
+    "description": "Apple MacBooks are known for premium build quality, long battery life, macOS optimization, and powerful Apple Silicon performance ideal for professionals and creatives. This model (MacBook Pro 14) features high-quality display, fast SSD storage, modern CPU/GPU, and is suitable for daily work, study, content creation, and entertainment.",
+    "imageUrl": "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=800&q=80",
+    "price": 2395.0,
+    "oldPrice": 2695.0,
+    "rating": 5
+  },
+  {
+    "id": 28,
+    "brand": "Apple",
+    "title": "Apple MacBook Pro 16",
+    "description": "Apple MacBooks are known for premium build quality, long battery life, macOS optimization, and powerful Apple Silicon performance ideal for professionals and creatives. This model (MacBook Pro 16) features high-quality display, fast SSD storage, modern CPU/GPU, and is suitable for daily work, study, content creation, and entertainment.",
+    "imageUrl": "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=800&q=80",
+    "price": 2437.0,
+    "oldPrice": 2917.0,
+    "rating": 5
+  },
+  {
+    "id": 29,
+    "brand": "Dell",
+    "title": "Dell XPS 13",
+    "description": "Dell laptops focus on reliability and productivity, offering strong performance, excellent displays, and durability for business and everyday users. This model (XPS 13) features high-quality display, fast SSD storage, modern CPU/GPU, and is suitable for daily work, study, content creation, and entertainment.",
+    "imageUrl": "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&w=800&q=80",
+    "price": 1582.0,
+    "oldPrice": 1893.0,
+    "rating": 3
+  },
+  {
+    "id": 30,
+    "brand": "Dell",
+    "title": "Dell XPS 15",
+    "description": "Dell laptops focus on reliability and productivity, offering strong performance, excellent displays, and durability for business and everyday users. This model (XPS 15) features high-quality display, fast SSD storage, modern CPU/GPU, and is suitable for daily work, study, content creation, and entertainment.",
+    "imageUrl": "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&w=800&q=80",
+    "price": 1729.0,
+    "oldPrice": 2035.0,
+    "rating": 5
+  },
+  {
+    "id": 31,
+    "brand": "Dell",
+    "title": "Dell Inspiron 15",
+    "description": "Dell laptops focus on reliability and productivity, offering strong performance, excellent displays, and durability for business and everyday users. This model (Inspiron 15) features high-quality display, fast SSD storage, modern CPU/GPU, and is suitable for daily work, study, content creation, and entertainment.",
+    "imageUrl": "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&w=800&q=80",
+    "price": 804.0,
+    "oldPrice": 1021.0,
+    "rating": 5
+  },
+  {
+    "id": 32,
+    "brand": "Dell",
+    "title": "Dell Latitude 7420",
+    "description": "Dell laptops focus on reliability and productivity, offering strong performance, excellent displays, and durability for business and everyday users. This model (Latitude 7420) features high-quality display, fast SSD storage, modern CPU/GPU, and is suitable for daily work, study, content creation, and entertainment.",
+    "imageUrl": "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&w=800&q=80",
+    "price": 2405.0,
+    "oldPrice": 2882.0,
+    "rating": 3
+  },
+  {
+    "id": 33,
+    "brand": "HP",
+    "title": "HP Spectre x360",
+    "description": "HP laptops balance performance and affordability, suitable for students, professionals, and gamers with modern designs and solid hardware. This model (Spectre x360) features high-quality display, fast SSD storage, modern CPU/GPU, and is suitable for daily work, study, content creation, and entertainment.",
+    "imageUrl": "https://images.unsplash.com/photo-1611078489935-0cb964de46d6?auto=format&fit=crop&w=800&q=80",
+    "price": 1762.0,
+    "oldPrice": 2168.0,
+    "rating": 3
+  },
+  {
+    "id": 34,
+    "brand": "HP",
+    "title": "HP Pavilion 14",
+    "description": "HP laptops balance performance and affordability, suitable for students, professionals, and gamers with modern designs and solid hardware. This model (Pavilion 14) features high-quality display, fast SSD storage, modern CPU/GPU, and is suitable for daily work, study, content creation, and entertainment.",
+    "imageUrl": "https://images.unsplash.com/photo-1611078489935-0cb964de46d6?auto=format&fit=crop&w=800&q=80",
+    "price": 1390.0,
+    "oldPrice": 1793.0,
+    "rating": 5
+  },
+  {
+    "id": 35,
+    "brand": "HP",
+    "title": "HP Envy 13",
+    "description": "HP laptops balance performance and affordability, suitable for students, professionals, and gamers with modern designs and solid hardware. This model (Envy 13) features high-quality display, fast SSD storage, modern CPU/GPU, and is suitable for daily work, study, content creation, and entertainment.",
+    "imageUrl": "https://images.unsplash.com/photo-1611078489935-0cb964de46d6?auto=format&fit=crop&w=800&q=80",
+    "price": 1801.0,
+    "oldPrice": 2151.0,
+    "rating": 5
+  },
+  {
+    "id": 36,
+    "brand": "HP",
+    "title": "HP Omen 16",
+    "description": "HP laptops balance performance and affordability, suitable for students, professionals, and gamers with modern designs and solid hardware. This model (Omen 16) features high-quality display, fast SSD storage, modern CPU/GPU, and is suitable for daily work, study, content creation, and entertainment.",
+    "imageUrl": "https://images.unsplash.com/photo-1611078489935-0cb964de46d6?auto=format&fit=crop&w=800&q=80",
+    "price": 1393.0,
+    "oldPrice": 1760.0,
+    "rating": 5
+  },
+  {
+    "id": 37,
+    "brand": "Lenovo",
+    "title": "Lenovo ThinkPad X1 Carbon",
+    "description": "Lenovo devices are trusted for business and gaming, featuring legendary keyboards, robust builds, and excellent thermal performance. This model (ThinkPad X1 Carbon) features high-quality display, fast SSD storage, modern CPU/GPU, and is suitable for daily work, study, content creation, and entertainment.",
+    "imageUrl": "https://images.unsplash.com/photo-1603791440384-56cd371ee9a7?auto=format&fit=crop&w=800&q=80",
+    "price": 2476.0,
+    "oldPrice": 2701.0,
+    "rating": 3
+  },
+  {
+    "id": 38,
+    "brand": "Lenovo",
+    "title": "Lenovo Legion 5",
+    "description": "Lenovo devices are trusted for business and gaming, featuring legendary keyboards, robust builds, and excellent thermal performance. This model (Legion 5) features high-quality display, fast SSD storage, modern CPU/GPU, and is suitable for daily work, study, content creation, and entertainment.",
+    "imageUrl": "https://images.unsplash.com/photo-1603791440384-56cd371ee9a7?auto=format&fit=crop&w=800&q=80",
+    "price": 1976.0,
+    "oldPrice": 2461.0,
+    "rating": 4
+  },
+  {
+    "id": 39,
+    "brand": "Lenovo",
+    "title": "Lenovo IdeaPad 5",
+    "description": "Lenovo devices are trusted for business and gaming, featuring legendary keyboards, robust builds, and excellent thermal performance. This model (IdeaPad 5) features high-quality display, fast SSD storage, modern CPU/GPU, and is suitable for daily work, study, content creation, and entertainment.",
+    "imageUrl": "https://images.unsplash.com/photo-1603791440384-56cd371ee9a7?auto=format&fit=crop&w=800&q=80",
+    "price": 1287.0,
+    "oldPrice": 1633.0,
+    "rating": 4
+  },
+  {
+    "id": 40,
+    "brand": "Lenovo",
+    "title": "Lenovo Yoga Slim 7",
+    "description": "Lenovo devices are trusted for business and gaming, featuring legendary keyboards, robust builds, and excellent thermal performance. This model (Yoga Slim 7) features high-quality display, fast SSD storage, modern CPU/GPU, and is suitable for daily work, study, content creation, and entertainment.",
+    "imageUrl": "https://images.unsplash.com/photo-1603791440384-56cd371ee9a7?auto=format&fit=crop&w=800&q=80",
+    "price": 1529.0,
+    "oldPrice": 1729.0,
+    "rating": 4
+  },
+  {
+    "id": 41,
+    "brand": "Asus",
+    "title": "Asus ROG Zephyrus G14",
+    "description": "Asus laptops deliver innovation and power, from lightweight ultrabooks to high-performance gaming machines with advanced cooling systems. This model (ROG Zephyrus G14) features high-quality display, fast SSD storage, modern CPU/GPU, and is suitable for daily work, study, content creation, and entertainment.",
+    "imageUrl": "https://images.unsplash.com/photo-1593642532973-d31b6557fa68?auto=format&fit=crop&w=800&q=80",
+    "price": 1185.0,
+    "oldPrice": 1458.0,
+    "rating": 4
+  },
+  {
+    "id": 42,
+    "brand": "Asus",
+    "title": "Asus TUF Gaming F15",
+    "description": "Asus laptops deliver innovation and power, from lightweight ultrabooks to high-performance gaming machines with advanced cooling systems. This model (TUF Gaming F15) features high-quality display, fast SSD storage, modern CPU/GPU, and is suitable for daily work, study, content creation, and entertainment.",
+    "imageUrl": "https://images.unsplash.com/photo-1593642532973-d31b6557fa68?auto=format&fit=crop&w=800&q=80",
+    "price": 1777.0,
+    "oldPrice": 2061.0,
+    "rating": 5
+  },
+  {
+    "id": 43,
+    "brand": "Asus",
+    "title": "Asus VivoBook S15",
+    "description": "Asus laptops deliver innovation and power, from lightweight ultrabooks to high-performance gaming machines with advanced cooling systems. This model (VivoBook S15) features high-quality display, fast SSD storage, modern CPU/GPU, and is suitable for daily work, study, content creation, and entertainment.",
+    "imageUrl": "https://images.unsplash.com/photo-1593642532973-d31b6557fa68?auto=format&fit=crop&w=800&q=80",
+    "price": 1831.0,
+    "oldPrice": 2131.0,
+    "rating": 4
+  },
+  {
+    "id": 44,
+    "brand": "Asus",
+    "title": "Asus ZenBook 14",
+    "description": "Asus laptops deliver innovation and power, from lightweight ultrabooks to high-performance gaming machines with advanced cooling systems. This model (ZenBook 14) features high-quality display, fast SSD storage, modern CPU/GPU, and is suitable for daily work, study, content creation, and entertainment.",
+    "imageUrl": "https://images.unsplash.com/photo-1593642532973-d31b6557fa68?auto=format&fit=crop&w=800&q=80",
+    "price": 860.0,
+    "oldPrice": 1234.0,
+    "rating": 3
+  },
+  {
+    "id": 45,
+    "brand": "Acer",
+    "title": "Acer Swift 3",
+    "description": "Acer offers value-driven laptops with competitive specs, making them popular for students, creators, and gamers on a budget. This model (Swift 3) features high-quality display, fast SSD storage, modern CPU/GPU, and is suitable for daily work, study, content creation, and entertainment.",
+    "imageUrl": "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80",
+    "price": 1488.0,
+    "oldPrice": 1877.0,
+    "rating": 4
+  },
+  {
+    "id": 46,
+    "brand": "Acer",
+    "title": "Acer Aspire 5",
+    "description": "Acer offers value-driven laptops with competitive specs, making them popular for students, creators, and gamers on a budget. This model (Aspire 5) features high-quality display, fast SSD storage, modern CPU/GPU, and is suitable for daily work, study, content creation, and entertainment.",
+    "imageUrl": "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80",
+    "price": 2540.0,
+    "oldPrice": 2974.0,
+    "rating": 3
+  },
+  {
+    "id": 47,
+    "brand": "Acer",
+    "title": "Acer Nitro 5",
+    "description": "Acer offers value-driven laptops with competitive specs, making them popular for students, creators, and gamers on a budget. This model (Nitro 5) features high-quality display, fast SSD storage, modern CPU/GPU, and is suitable for daily work, study, content creation, and entertainment.",
+    "imageUrl": "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80",
+    "price": 1299.0,
+    "oldPrice": 1719.0,
+    "rating": 5
+  },
+  {
+    "id": 48,
+    "brand": "Acer",
+    "title": "Acer Predator Helios 300",
+    "description": "Acer offers value-driven laptops with competitive specs, making them popular for students, creators, and gamers on a budget. This model (Predator Helios 300) features high-quality display, fast SSD storage, modern CPU/GPU, and is suitable for daily work, study, content creation, and entertainment.",
+    "imageUrl": "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80",
+    "price": 2076.0,
+    "oldPrice": 2349.0,
+    "rating": 3
+  },
+  {
+    "id": 49,
+    "brand": "Apple",
+    "title": "Apple MacBook Air M1",
+    "description": "Apple MacBooks are known for premium build quality, long battery life, macOS optimization, and powerful Apple Silicon performance ideal for professionals and creatives. This model (MacBook Air M1) features high-quality display, fast SSD storage, modern CPU/GPU, and is suitable for daily work, study, content creation, and entertainment.",
+    "imageUrl": "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=800&q=80",
+    "price": 805.0,
+    "oldPrice": 1246.0,
+    "rating": 4
+  },
+  {
+    "id": 50,
+    "brand": "Apple",
+    "title": "Apple MacBook Air M2",
+    "description": "Apple MacBooks are known for premium build quality, long battery life, macOS optimization, and powerful Apple Silicon performance ideal for professionals and creatives. This model (MacBook Air M2) features high-quality display, fast SSD storage, modern CPU/GPU, and is suitable for daily work, study, content creation, and entertainment.",
+    "imageUrl": "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=800&q=80",
+    "price": 2203.0,
+    "oldPrice": 2386.0,
+    "rating": 3
+  }
+]

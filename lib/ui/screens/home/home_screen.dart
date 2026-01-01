@@ -1,0 +1,555 @@
+import 'package:e_top_store/ui/widgets/notifications_screen.dart';
+import 'package:e_top_store/ui/widgets/top_search_bar.dart';
+import 'package:flutter/material.dart';
+import 'dart:async';
+import 'dart:convert';
+import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import '../../widgets/language_screen.dart';
+
+import '../../../data/models/product.dart';
+import '../../../data/models/brand.dart';
+
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  String _lang = 'en';
+  late PageController _pageController;
+  int _currentPage = 0;
+  Timer? _timer;
+
+  List<Product> _products = [];
+  List<Brand> brands = [];
+
+  bool isLoadingBrands = true;
+  bool _isLoading = true;
+
+  final List<String> _bannerImages = [
+    'assets/images/1.png',
+    'assets/images/2.png',
+    'assets/images/3.jpg',
+  ];
+
+  static const Map<String, Map<String, String>> _translations = {
+    'en': {'search': 'Search'},
+    'km': {'search': 'ស្វែងរក'},
+  };
+
+  String t(String key) => _translations[_lang]?[key] ?? key;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController(initialPage: 0);
+    _startTimer();
+    _loadProducts();
+    _loadBrands();
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  void _startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 5), (timer) {
+      int nextPage = _currentPage + 1;
+      if (nextPage >= _bannerImages.length) {
+        nextPage = 0;
+      }
+      _pageController.animateToPage(
+        nextPage,
+        duration: const Duration(milliseconds: 400),
+        curve: Curves.easeInOut,
+      );
+    });
+  }
+
+  Future<void> _loadProducts() async {
+    final String jsonString = await rootBundle.loadString(
+      'lib/data/laptops.json',
+    );
+
+    final List<dynamic> jsonData = json.decode(jsonString);
+
+    setState(() {
+      _products = jsonData.map((e) => Product.fromJson(e)).toList();
+      _isLoading = false;
+    });
+  }
+
+  Future<void> _loadBrands() async {
+    try {
+      final jsonString = await rootBundle.loadString('lib/data/brands.json');
+
+      final List jsonList = json.decode(jsonString);
+
+      setState(() {
+        brands = jsonList.map((e) => Brand.fromJson(e)).toList();
+        isLoadingBrands = false;
+      });
+    } catch (e) {
+      debugPrint('Brand load error: $e');
+      setState(() {
+        isLoadingBrands = false;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFFF8F9FA),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: TopSearchBar(
+                  lang: _lang,
+                  searchText: t('search'),
+                  onLanguageChanged: (value) {
+                    setState(() {
+                      _lang = value;
+                    });
+                  },
+                  onNotificationTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (_) => NotificationsScreen()),
+                    );
+                  },
+                ),
+              ),
+              const SizedBox(height: 20),
+              _bigBanner(),
+              const SizedBox(height: 24),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: _sectionHeader("Popular Brand"),
+              ),
+              const SizedBox(height: 16),
+              Padding(
+                padding: const EdgeInsets.only(left: 16),
+                child: _brandList(),
+              ),
+              const SizedBox(height: 24),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: _sectionHeader("Popular Laptop"),
+              ),
+              const SizedBox(height: 16),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: _laptopGrid(),
+              ),
+              const SizedBox(height: 20),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _bigBanner() {
+    return SizedBox(
+      height: 180,
+      child: Column(
+        children: [
+          Expanded(
+            child: PageView.builder(
+              controller: _pageController,
+              itemCount: _bannerImages.length,
+              onPageChanged: (index) {
+                setState(() {
+                  _currentPage = index;
+                });
+              },
+              itemBuilder: (context, index) {
+                return Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 16),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.08),
+                        blurRadius: 20,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: Image.asset(_bannerImages[index], fit: BoxFit.cover),
+                  ),
+                );
+              },
+            ),
+          ),
+          const SizedBox(height: 12),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: List.generate(_bannerImages.length, (index) {
+              return _buildDot(index: index);
+            }),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _sectionHeader(String title) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          title,
+          style: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.black87,
+          ),
+        ),
+        Text(
+          "See all",
+          style: TextStyle(
+            color: Colors.red.shade600,
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDot({required int index}) {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      margin: const EdgeInsets.only(right: 6),
+      height: 6,
+      width: _currentPage == index ? 24 : 6,
+      decoration: BoxDecoration(
+        color: _currentPage == index
+            ? Colors.red.shade600
+            : Colors.grey.shade300,
+        borderRadius: BorderRadius.circular(3),
+      ),
+    );
+  }
+
+  Widget _brandList() {
+    if (isLoadingBrands) {
+      return const SizedBox(
+        height: 90,
+        child: Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    final displayBrands = brands.take(5).toList();
+
+    return SizedBox(
+      height: 60,
+      child: ListView.builder(
+        padding: const EdgeInsets.only(left: 16),
+        scrollDirection: Axis.horizontal,
+        itemCount: displayBrands.length,
+        itemBuilder: (context, index) {
+          final brand = displayBrands[index];
+
+          return Container(
+            width: 80,
+            margin: EdgeInsets.only(
+              right: index == displayBrands.length - 1 ? 16 : 12,
+            ),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.05),
+                  blurRadius: 10,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: SvgPicture.network(
+                    brand.image,
+                    height: 40,
+                    fit: BoxFit.contain,
+                  ),
+                ),
+                // const SizedBox(height: 8),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _laptopGrid() {
+    if (_isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    return GridView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 14,
+        mainAxisSpacing: 14,
+        childAspectRatio: 0.68,
+      ),
+      itemCount: _products.length,
+      itemBuilder: (context, index) {
+        return _laptopCard(_products[index]);
+      },
+    );
+  }
+
+  Widget _laptopCard(Product product) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.04),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Stack(
+            children: [
+              Container(
+                height: 130,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade50,
+                  borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(16),
+                  ),
+                ),
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(16),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: Image.network(
+                      // 👉 REPLACE HERE
+                      product.imageUrl,
+                      fit: BoxFit.contain,
+                      errorBuilder: (_, __, ___) =>
+                          const Icon(Icons.image_not_supported),
+                    ),
+                  ),
+                ),
+              ),
+              Positioned(
+                right: 8,
+                top: 8,
+                child: Container(
+                  width: 32,
+                  height: 32,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.08),
+                        blurRadius: 8,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: const Icon(
+                    Icons.favorite_border,
+                    size: 18,
+                    color: Colors.black54,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    product.brand,
+                    style: TextStyle(
+                      fontSize: 11,
+                      color: Colors.grey.shade600,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    product.title,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 13,
+                      height: 1.3,
+                      color: Colors.black87,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Row(
+                    children: List.generate(
+                      5,
+                      (index) => Icon(
+                        index < product.rating ? Icons.star : Icons.star_border,
+                        color: index < product.rating
+                            ? Colors.amber.shade600
+                            : Colors.grey.shade300,
+                        size: 14,
+                      ),
+                    ),
+                  ),
+                  const Spacer(),
+                  Row(
+                    children: [
+                      Text(
+                        "\$${product.price.toStringAsFixed(2)}",
+                        style: TextStyle(
+                          color: Colors.red.shade600,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(width: 6),
+                      Text(
+                        "\$${product.oldPrice.toStringAsFixed(2)}",
+                        style: TextStyle(
+                          decoration: TextDecoration.lineThrough,
+                          color: Colors.grey.shade400,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _CambodiaFlag extends StatelessWidget {
+  const _CambodiaFlag({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      painter: _CambodiaFlagPainter(),
+      size: const Size(double.infinity, double.infinity),
+    );
+  }
+}
+
+class _CambodiaFlagPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final w = size.width;
+    final h = size.height;
+    final rect = Offset.zero & size;
+
+    final path = Path()..addOval(rect);
+    canvas.save();
+    canvas.clipPath(path);
+
+    final blue = const Color(0xFF032EA1);
+    final red = const Color(0xFFD21F26);
+
+    final topH = h * 0.2;
+    final bottomH = h * 0.2;
+    final middleH = h - topH - bottomH;
+
+    final paint = Paint();
+    paint.color = blue;
+    canvas.drawRect(Rect.fromLTWH(0, 0, w, topH), paint);
+
+    paint.color = red;
+    canvas.drawRect(Rect.fromLTWH(0, topH, w, middleH), paint);
+
+    paint.color = blue;
+    canvas.drawRect(Rect.fromLTWH(0, topH + middleH, w, bottomH), paint);
+
+    final centerX = w / 2;
+    final baseY = topH + middleH * 0.6;
+    paint.color = Colors.white;
+
+    final baseW = w * 0.36;
+    final baseH = h * 0.06;
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(
+        Rect.fromCenter(
+          center: Offset(centerX, baseY),
+          width: baseW,
+          height: baseH,
+        ),
+        const Radius.circular(1),
+      ),
+      paint,
+    );
+
+    final towerH = h * 0.12;
+    final towerW = baseW * 0.18;
+    final gap = baseW * 0.12;
+
+    void drawTower(double offsetX) {
+      final px = centerX + offsetX;
+      final p1 = Offset(px, baseY - baseH / 2 - towerH);
+      final p2 = Offset(px - towerW / 2, baseY - baseH / 2);
+      final p3 = Offset(px + towerW / 2, baseY - baseH / 2);
+      final towerPath = Path()
+        ..moveTo(p1.dx, p1.dy)
+        ..lineTo(p2.dx, p2.dy)
+        ..lineTo(p3.dx, p3.dy)
+        ..close();
+      canvas.drawPath(towerPath, paint);
+    }
+
+    drawTower(-gap);
+    drawTower(0);
+    drawTower(gap);
+
+    canvas.restore();
+
+    final borderPaint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 0.8
+      ..color = Colors.black12;
+    canvas.drawOval(rect.deflate(0.5), borderPaint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}

@@ -1,19 +1,19 @@
+import 'package:e_top_store/ui/screens/main/main_layout.dart';
 import 'package:flutter/material.dart';
-import 'screens/explore_screen.dart';
+// import 'package:e_top_store/ui/screens/home/home_screen.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
-/// Root app widget - open ExploreScreen directly.
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: ExploreScreen(),
+      home: MainLayout(), 
     );
   }
 }
