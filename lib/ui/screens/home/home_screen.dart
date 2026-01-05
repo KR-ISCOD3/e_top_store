@@ -10,6 +10,8 @@ import '../../widgets/language_screen.dart';
 import '../../../data/models/product.dart';
 import '../../../data/models/brand.dart';
 
+import 'package:http/http.dart' as http;
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -73,33 +75,49 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _loadProducts() async {
-    final String jsonString = await rootBundle.loadString(
-      'lib/data/laptops.json',
-    );
+    try {
+      final response = await http.get(
+        Uri.parse('http://10.0.2.2:5000/api/laptops'),
+      );
 
-    final List<dynamic> jsonData = json.decode(jsonString);
+      if (response.statusCode == 200) {
+        final List data = json.decode(response.body);
 
-    setState(() {
-      _products = jsonData.map((e) => Product.fromJson(e)).toList();
+        setState(() {
+          _products = data.map((e) => Product.fromJson(e)).toList();
+          _isLoading = false;
+        });
+      } else {
+        debugPrint('Failed to load laptops: ${response.statusCode}');
+        _isLoading = false;
+      }
+    } catch (e) {
+      debugPrint('Laptop API error: $e');
       _isLoading = false;
-    });
+    }
   }
 
   Future<void> _loadBrands() async {
     try {
-      final jsonString = await rootBundle.loadString('lib/data/brands.json');
+      final response = await http.get(
+        Uri.parse('http://10.0.2.2:5000/api/brands'),
+        headers: {'Content-Type': 'application/json'},
+      );
 
-      final List jsonList = json.decode(jsonString);
+      if (response.statusCode == 200) {
+        final List jsonList = json.decode(response.body);
 
-      setState(() {
-        brands = jsonList.map((e) => Brand.fromJson(e)).toList();
+        setState(() {
+          brands = jsonList.map((e) => Brand.fromJson(e)).toList();
+          isLoadingBrands = false;
+        });
+      } else {
+        debugPrint('Failed to load brands: ${response.statusCode}');
         isLoadingBrands = false;
-      });
+      }
     } catch (e) {
       debugPrint('Brand load error: $e');
-      setState(() {
-        isLoadingBrands = false;
-      });
+      isLoadingBrands = false;
     }
   }
 
@@ -246,6 +264,25 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  Widget _brandLogo(String url) {
+    final isSvg = url.toLowerCase().endsWith('.svg');
+
+    return isSvg
+        ? SvgPicture.network(
+            url,
+            height: 40,
+            fit: BoxFit.contain,
+            placeholderBuilder: (_) =>
+                const SizedBox(height: 40, child: CircularProgressIndicator()),
+          )
+        : Image.network(
+            url,
+            height: 40,
+            fit: BoxFit.contain,
+            errorBuilder: (_, __, ___) => const Icon(Icons.image_not_supported),
+          );
+  }
+
   Widget _brandList() {
     if (isLoadingBrands) {
       return const SizedBox(
@@ -254,7 +291,7 @@ class _HomeScreenState extends State<HomeScreen> {
       );
     }
 
-    final displayBrands = brands.take(5).toList();
+    final displayBrands = brands.toList();
 
     return SizedBox(
       height: 60,
@@ -286,17 +323,30 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8),
-                  child: SvgPicture.network(
-                    brand.image,
-                    height: 40,
-                    fit: BoxFit.contain,
-                  ),
+                  child: _brandLogo(brand.image),
                 ),
                 // const SizedBox(height: 8),
               ],
             ),
           );
         },
+      ),
+    );
+  }
+
+  Widget _buildRatingStars(int? rating) {
+    if (rating == null || rating <= 0) {
+      return const SizedBox.shrink();
+    }
+
+    return Row(
+      children: List.generate(
+        5,
+        (index) => Icon(
+          index < rating ? Icons.star : Icons.star_border,
+          color: index < rating ? Colors.amber : Colors.grey,
+          size: 14,
+        ),
       ),
     );
   }
@@ -338,13 +388,14 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // ================= IMAGE =================
           Stack(
             children: [
               Container(
                 height: 130,
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  color: Colors.grey.shade50,
+                  color: Colors.white,
                   borderRadius: const BorderRadius.vertical(
                     top: Radius.circular(16),
                   ),
@@ -356,7 +407,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Padding(
                     padding: const EdgeInsets.all(12),
                     child: Image.network(
-                      // 👉 REPLACE HERE
                       product.imageUrl,
                       fit: BoxFit.contain,
                       errorBuilder: (_, __, ___) =>
@@ -391,12 +441,15 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ],
           ),
+
+          // ================= CONTENT =================
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(12),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // BRAND
                   Text(
                     product.brand,
                     style: TextStyle(
@@ -405,7 +458,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       fontWeight: FontWeight.w500,
                     ),
                   ),
+
                   const SizedBox(height: 4),
+
+                  // TITLE
                   Text(
                     product.title,
                     maxLines: 2,
@@ -417,20 +473,26 @@ class _HomeScreenState extends State<HomeScreen> {
                       color: Colors.black87,
                     ),
                   ),
-                  const SizedBox(height: 6),
-                  Row(
-                    children: List.generate(
-                      5,
-                      (index) => Icon(
-                        index < product.rating ? Icons.star : Icons.star_border,
-                        color: index < product.rating
-                            ? Colors.amber.shade600
-                            : Colors.grey.shade300,
-                        size: 14,
-                      ),
+                  // DESCRIPTION 👇
+                  Text(
+                    product.description,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 13,
+                      color: Color(0xFF777777),
+                      height: 1.4,
                     ),
                   ),
+                  const SizedBox(height: 6),
+
+                  // ⭐ RATING (AUTO HIDE — EXACTLY LIKE YOUR SCREENSHOT)
+                  if (product.rating != null && product.rating! > 0)
+                    _buildRatingStars(product.rating),
+
                   const Spacer(),
+
+                  // PRICE
                   Row(
                     children: [
                       Text(

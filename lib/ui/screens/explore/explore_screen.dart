@@ -387,19 +387,25 @@ class _ExploreScreenState extends State<ExploreScreen> {
       ],
     );
   }
+  Widget _buildRatingStars(int? rating) {
+    if (rating == null || rating <= 0) {
+      return const SizedBox.shrink(); // ✅ hide stars
+    }
 
-  Widget _buildRatingStars(int rating) {
     return Row(
       children: List.generate(
         5,
         (i) => Icon(
           i < rating ? Icons.star : Icons.star_border,
-          color: i < rating ? const Color(0xFFFFB800) : const Color(0xFFE0E0E0),
+          color: i < rating
+              ? const Color(0xFFFFB800)
+              : const Color(0xFFE0E0E0),
           size: 14,
         ),
       ),
     );
   }
+
 
   Widget _buildPriceRow(Product product) {
     return Row(

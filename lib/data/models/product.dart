@@ -6,7 +6,7 @@ class Product {
   final String imageUrl;
   final double price;
   final double oldPrice;
-  final int rating;
+  final int? rating; // 👈 nullable
 
   Product({
     required this.id,
@@ -16,19 +16,22 @@ class Product {
     required this.imageUrl,
     required this.price,
     required this.oldPrice,
-    required this.rating,
+    this.rating,
   });
 
   factory Product.fromJson(Map<String, dynamic> json) {
+    final price = double.parse(json['price'].toString());
+    final discount = json['discount'] ?? 0;
+
     return Product(
       id: json['id'],
-      brand: json['brand'],
-      title: json['title'],
+      brand: json['brand_name'],
+      title: json['name'],
       description: json['description'],
-      imageUrl: json['imageUrl'],
-      price: (json['price'] as num).toDouble(),
-      oldPrice: (json['oldPrice'] as num).toDouble(),
-      rating: json['rating'],
+      imageUrl: json['thumbnail'],
+      price: price,
+      oldPrice: discount > 0 ? price + discount : price,
+      rating: null, // ❌ backend not ready yet
     );
   }
 }
