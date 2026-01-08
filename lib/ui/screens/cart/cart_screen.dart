@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../../data/models/cart_item.dart';
 import '../../../data/services/cart_service.dart';
+import 'package:e_top_store/data/services/auth_service.dart';
+import '../auth/login_screen.dart';
 
 class CartScreen extends StatefulWidget {
   final VoidCallback onBack;
@@ -323,14 +325,44 @@ class _CheckoutButton extends StatelessWidget {
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.black,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
         ),
-        onPressed: () {},
+        onPressed: () async {
+          // 🔐 CHECK LOGIN
+          if (!AuthService.isLoggedIn) {
+            await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => const LoginScreen(),
+              ),
+            );
+
+            // after login → recheck
+            if (!AuthService.isLoggedIn) return;
+          }
+
+          // ✅ USER LOGGED IN → CONTINUE CHECKOUT
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("Proceed to checkout 🚀"),
+            ),
+          );
+
+          // TODO: Navigate to checkout screen
+          // Navigator.push(context,
+          //   MaterialPageRoute(builder: (_) => const CheckoutScreen()));
+        },
         child: const Text(
           'Check Out',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.w600,
+          ),
         ),
       ),
     );
   }
 }
+

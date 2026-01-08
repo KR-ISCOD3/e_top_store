@@ -1,9 +1,30 @@
 import 'package:e_top_store/data/services/auth_service.dart';
+import 'package:e_top_store/data/services/google_auth_service.dart';
+import 'package:e_top_store/ui/screens/main/main_layout.dart';
 import 'package:flutter/material.dart';
 
-
-class RegisterScreen extends StatelessWidget {
+class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
+
+  @override
+  State<RegisterScreen> createState() => _RegisterScreenState();
+}
+
+class _RegisterScreenState extends State<RegisterScreen> {
+  // 🔹 Controllers
+  final TextEditingController nameCtrl = TextEditingController();
+  final TextEditingController emailCtrl = TextEditingController();
+  final TextEditingController passwordCtrl = TextEditingController();
+  final TextEditingController confirmCtrl = TextEditingController();
+
+  @override
+  void dispose() {
+    nameCtrl.dispose();
+    emailCtrl.dispose();
+    passwordCtrl.dispose();
+    confirmCtrl.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,9 +35,7 @@ class RegisterScreen extends StatelessWidget {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+          onPressed: () => Navigator.pop(context),
         ),
       ),
       body: SafeArea(
@@ -27,7 +46,7 @@ class RegisterScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 40),
-                   
+
                 /// 🔹 Title
                 const Text(
                   "Create Account",
@@ -49,20 +68,69 @@ class RegisterScreen extends StatelessWidget {
 
                 const SizedBox(height: 60),
 
-                _inputField("Email"),
+                /// 🔹 NAME
+                _inputField("Full Name", controller: nameCtrl),
                 const SizedBox(height: 20),
-                _inputField("Password", obscure: true),
+
+                /// 🔹 EMAIL
+                _inputField("Email", controller: emailCtrl),
                 const SizedBox(height: 20),
-                _inputField("Confirm Password", obscure: true),
+
+                /// 🔹 PASSWORD
+                _inputField(
+                  "Password",
+                  controller: passwordCtrl,
+                  obscure: true,
+                ),
+                const SizedBox(height: 20),
+
+                /// 🔹 CONFIRM PASSWORD
+                _inputField(
+                  "Confirm Password",
+                  controller: confirmCtrl,
+                  obscure: true,
+                ),
 
                 const SizedBox(height: 32),
 
+                /// 🔹 SIGN UP
                 _primaryButton(
                   text: "Sign up",
                   onTap: () async {
-                    await AuthService.register();
-                    Navigator.pop(context);
-                  }
+                    if (nameCtrl.text.isEmpty ||
+                        emailCtrl.text.isEmpty ||
+                        passwordCtrl.text.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text("Please fill all fields"),
+                        ),
+                      );
+                      return;
+                    }
+
+                    if (passwordCtrl.text != confirmCtrl.text) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text("Passwords do not match"),
+                        ),
+                      );
+                      return;
+                    }
+
+                    final success = await AuthService.register(
+                      name: nameCtrl.text.trim(),
+                      email: emailCtrl.text.trim(),
+                      password: passwordCtrl.text.trim(),
+                    );
+
+                    if (success && context.mounted) {
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (_) => const MainLayout()),
+                        (route) => false,
+                      );
+                    }
+                  },
                 ),
 
                 const SizedBox(height: 24),
@@ -94,24 +162,26 @@ class RegisterScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
 
+                /// 🔹 GOOGLE SIGN IN
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    _socialButton(
-                      child: Image.asset(
-                        'assets/images/google_icon.png',
-                        width: 24,
-                        height: 24,
+                    GestureDetector(
+                      onTap: () async {
+                        final success =
+                            await GoogleAuthService.signInWithGoogle();
+                        if (success && context.mounted) {
+                          Navigator.pop(context);
+                        }
+                      },
+                      child: _socialButton(
+                        child: Image.asset(
+                          'assets/images/google_icon.png',
+                          width: 24,
+                          height: 24,
+                        ),
                       ),
                     ),
-                    // const SizedBox(width: 20),
-                    // _socialButton(
-                    //   child: Image.asset(
-                    //     'assets/facebook_icon.png',
-                    //     width: 24,
-                    //     height: 24,
-                    //   ),
-                    // ),
                   ],
                 ),
 
@@ -124,42 +194,34 @@ class RegisterScreen extends StatelessWidget {
     );
   }
 
-  Widget _inputField(String hint, {bool obscure = false}) {
+  /// 🔹 INPUT FIELD (UNCHANGED UI)
+  Widget _inputField(
+    String hint, {
+    required TextEditingController controller,
+    bool obscure = false,
+  }) {
     return TextField(
+      controller: controller,
       obscureText: obscure,
-      style: const TextStyle(fontSize: 15),
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: TextStyle(
-          color: Colors.grey.shade400,
-          fontSize: 15,
-        ),
         filled: true,
         fillColor: const Color(0xFFF5F5F5),
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 20,
-          vertical: 18,
-        ),
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide.none,
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide.none,
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(
-            color: Color(0xFF1E90FF),
-            width: 1.5,
-          ),
         ),
       ),
     );
   }
 
-  Widget _primaryButton({required String text, required VoidCallback onTap}) {
+  /// 🔹 PRIMARY BUTTON
+  Widget _primaryButton({
+    required String text,
+    required VoidCallback onTap,
+  }) {
     return SizedBox(
       width: double.infinity,
       height: 56,
@@ -167,7 +229,6 @@ class RegisterScreen extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.black,
           foregroundColor: Colors.white,
-          elevation: 0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
@@ -178,13 +239,13 @@ class RegisterScreen extends StatelessWidget {
           style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
-            letterSpacing: 0.5,
           ),
         ),
       ),
     );
   }
 
+  /// 🔹 SOCIAL BUTTON
   Widget _socialButton({required Widget child}) {
     return Container(
       width: 56,

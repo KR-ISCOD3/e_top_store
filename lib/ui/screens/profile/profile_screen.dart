@@ -1,5 +1,6 @@
 import 'package:e_top_store/data/services/auth_service.dart';
-import 'package:e_top_store/ui/screens/auth/login_screen.dart';
+import 'package:e_top_store/data/services/user_session.dart';
+import 'package:e_top_store/ui/screens/main/main_layout.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -36,16 +37,16 @@ class ProfileScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // ===== USER INFO =====
-                    const Text(
-                      'Rak Smey',
-                      style: TextStyle(
+                    Text(
+                      UserSession.name ?? 'User',
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'view profile',
+                      UserSession.email ?? '',
                       style: TextStyle(
                         fontSize: 13,
                         color: Colors.grey.shade600,
@@ -103,10 +104,18 @@ class ProfileScreen extends StatelessWidget {
                       child: OutlinedButton(
                         onPressed: () {
                           AuthService.logout();
-                          Navigator.pop(context);
+
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const MainLayout(),
+                            ),
+                            (route) => false,
+                          );
                         },
                         style: OutlinedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          padding:
+                              const EdgeInsets.symmetric(vertical: 14),
                           side: BorderSide(color: Colors.grey.shade400),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
@@ -114,7 +123,8 @@ class ProfileScreen extends StatelessWidget {
                         ),
                         child: const Text(
                           'Sign Out',
-                          style: TextStyle(fontSize: 15, color: Colors.black),
+                          style:
+                              TextStyle(fontSize: 15, color: Colors.black),
                         ),
                       ),
                     ),
@@ -153,7 +163,6 @@ class _ActionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey.shade300),
@@ -169,7 +178,8 @@ class _ActionCard extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               label,
-              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+              style:
+                  const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
             ),
           ],
         ),
