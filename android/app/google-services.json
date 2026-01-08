@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "239323243622",
+    "project_id": "e-top-store-68004",
+    "storage_bucket": "e-top-store-68004.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:239323243622:android:4b776b5734179fbcc3f9a7",
+        "android_client_info": {
+          "package_name": "com.example.e_top_store"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqP6ZNLUWhpjzB4-ecg23wwAbudms--v0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
