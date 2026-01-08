@@ -6,6 +6,7 @@ class TopSearchBar extends StatelessWidget {
   final Function(String) onLanguageChanged;
   final VoidCallback? onNotificationTap;
   final String searchText;
+  final ValueChanged<String>? onSearchChanged; // ✅ SEARCH CALLBACK
 
   const TopSearchBar({
     super.key,
@@ -13,12 +14,14 @@ class TopSearchBar extends StatelessWidget {
     required this.onLanguageChanged,
     this.onNotificationTap,
     this.searchText = 'Search',
+    this.onSearchChanged,
   });
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
+        // 🔍 SEARCH FIELD
         Expanded(
           child: Container(
             height: 44,
@@ -38,17 +41,29 @@ class TopSearchBar extends StatelessWidget {
               children: [
                 Icon(Icons.search, color: Colors.grey.shade400, size: 22),
                 const SizedBox(width: 12),
-                Text(
-                  searchText,
-                  style: TextStyle(color: Colors.grey.shade500, fontSize: 15),
+                Expanded(
+                  child: TextField(
+                    onChanged: onSearchChanged, // ✅ SEND TEXT OUT
+                    decoration: InputDecoration(
+                      hintText: searchText,
+                      hintStyle: TextStyle(
+                        color: Colors.grey.shade500,
+                        fontSize: 15,
+                      ),
+                      border: InputBorder.none,
+                      isDense: true,
+                    ),
+                    style: const TextStyle(fontSize: 15),
+                  ),
                 ),
               ],
             ),
           ),
         ),
+
         const SizedBox(width: 12),
 
-        // 🌐 Language switch
+        // 🌐 LANGUAGE SWITCH
         GestureDetector(
           onTap: () async {
             final result = await Navigator.of(context).push<bool>(
@@ -75,14 +90,9 @@ class TopSearchBar extends StatelessWidget {
               ],
             ),
             child: Center(
-              child: SizedBox(
-                width: 28,
-                height: 28,
-                child: lang == 'en'
-                    ? const Center(
-                        child: Text('🇺🇸', style: TextStyle(fontSize: 18)),
-                      )
-                    : const Text('🇰🇭', style: TextStyle(fontSize: 18)),
+              child: Text(
+                lang == 'en' ? '🇺🇸' : '🇰🇭',
+                style: const TextStyle(fontSize: 18),
               ),
             ),
           ),
@@ -90,7 +100,7 @@ class TopSearchBar extends StatelessWidget {
 
         const SizedBox(width: 12),
 
-        // 🔔 Notification
+        // 🔔 NOTIFICATION
         GestureDetector(
           onTap: onNotificationTap,
           child: Container(

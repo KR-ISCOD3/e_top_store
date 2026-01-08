@@ -27,8 +27,11 @@ class _HomeScreenState extends State<HomeScreen> {
   late PageController _pageController;
   int _currentPage = 0;
   Timer? _timer;
+  final TextEditingController _searchController = TextEditingController();
 
-  List<Product> _products = [];
+  List<Product> _allProducts = [];
+  List<Product> _filteredProducts = [];
+  // List<Product> _products = [];
   List<Brand> brands = [];
 
   bool isLoadingBrands = true;
@@ -84,20 +87,41 @@ class _HomeScreenState extends State<HomeScreen> {
       );
 
       if (response.statusCode == 200) {
-        final List data = json.decode(response.body);
+        final decoded = json.decode(response.body);
+
+        // ✅ FIX: read "data" key
+        final List list = decoded['data'];
 
         setState(() {
-          _products = data.map((e) => Product.fromJson(e)).toList();
+          _allProducts = list.map((e) => Product.fromJson(e)).toList();
+          _filteredProducts = List.from(_allProducts);
           _isLoading = false;
         });
       } else {
-        debugPrint('Failed to load laptops: ${response.statusCode}');
         _isLoading = false;
       }
     } catch (e) {
       debugPrint('Laptop API error: $e');
       _isLoading = false;
     }
+  }
+
+  void _applyFilters() {
+    final query = _searchController.text.toLowerCase().trim();
+
+    if (query.isEmpty) {
+      setState(() {
+        _filteredProducts = List.from(_allProducts);
+      });
+      return;
+    }
+
+    setState(() {
+      _filteredProducts = _allProducts.where((product) {
+        return product.title.toLowerCase().contains(query) ||
+            product.brand.toLowerCase().contains(query);
+      }).toList();
+    });
   }
 
   Future<void> _loadBrands() async {
@@ -138,15 +162,21 @@ class _HomeScreenState extends State<HomeScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: TopSearchBar(
                   lang: _lang,
-                  searchText: t('search'),
+                  searchText: 'Search',
                   onLanguageChanged: (value) {
                     setState(() {
                       _lang = value;
                     });
                   },
+                  onSearchChanged: (value) {
+                    _searchController.text = value;
+                    _applyFilters(); // ✅ SEARCH BY NAME WORKS
+                  },
                   onNotificationTap: () {
                     Navigator.of(context).push(
-                      MaterialPageRoute(builder: (_) => NotificationsScreen()),
+                      MaterialPageRoute(
+                        builder: (_) => const NotificationsScreen(),
+                      ),
                     );
                   },
                 ),
@@ -373,9 +403,9 @@ class _HomeScreenState extends State<HomeScreen> {
         mainAxisSpacing: 14,
         childAspectRatio: 0.68,
       ),
-      itemCount: _products.length,
+      itemCount: _filteredProducts.length,
       itemBuilder: (context, index) {
-        return _laptopCard(_products[index]);
+        return _laptopCard(_filteredProducts[index]);
       },
     );
   }

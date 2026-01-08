@@ -4,6 +4,7 @@ import 'package:e_top_store/ui/widgets/top_search_bar.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
 
 class ExploreScreen extends StatefulWidget {
   const ExploreScreen({super.key});
@@ -14,6 +15,7 @@ class ExploreScreen extends StatefulWidget {
 
 class _ExploreScreenState extends State<ExploreScreen> {
   final TextEditingController _searchController = TextEditingController();
+  final String _baseUrl = 'http://10.0.2.2:5000/api';
   List<Product> _allProducts = [];
   List<Product> _displayedProducts = [];
   bool _isLoading = true;
@@ -48,16 +50,22 @@ class _ExploreScreenState extends State<ExploreScreen> {
 
   Future<void> _loadProducts() async {
     try {
-      final jsonString = await rootBundle.loadString('lib/data/laptops.json');
-      final List<dynamic> jsonData = json.decode(jsonString);
+      final res = await http.get(Uri.parse('$_baseUrl/laptops/best-selling'));
 
-      setState(() {
-        _allProducts = jsonData.map((e) => Product.fromJson(e)).toList();
-        _displayedProducts = List<Product>.from(_allProducts);
-        _isLoading = false;
-      });
+      if (res.statusCode == 200) {
+        final decoded = json.decode(res.body);
+        final List list = decoded['data'];
+
+        setState(() {
+          _allProducts = list.map((e) => Product.fromJson(e)).toList();
+          _displayedProducts = List<Product>.from(_allProducts);
+          _isLoading = false;
+        });
+      } else {
+        throw Exception('Failed to load best selling products');
+      }
     } catch (e) {
-      debugPrint('❌ Explore JSON load error: $e');
+      debugPrint('❌ Best selling API error: $e');
       setState(() => _isLoading = false);
     }
   }
@@ -158,10 +166,10 @@ class _ExploreScreenState extends State<ExploreScreen> {
               setState(() {
                 _lang = value;
               });
-              final label = _lang == 'km' ? 'Khmer' : 'English';
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(SnackBar(content: Text('Language: $label')));
+            },
+            onSearchChanged: (value) {
+              _searchController.text = value;
+              _applyFilters(); // ✅ SEARCH BY NAME WORKS
             },
             onNotificationTap: () {
               Navigator.of(context).push(
@@ -387,6 +395,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
       ],
     );
   }
+
   Widget _buildRatingStars(int? rating) {
     if (rating == null || rating <= 0) {
       return const SizedBox.shrink(); // ✅ hide stars
@@ -397,15 +406,12 @@ class _ExploreScreenState extends State<ExploreScreen> {
         5,
         (i) => Icon(
           i < rating ? Icons.star : Icons.star_border,
-          color: i < rating
-              ? const Color(0xFFFFB800)
-              : const Color(0xFFE0E0E0),
+          color: i < rating ? const Color(0xFFFFB800) : const Color(0xFFE0E0E0),
           size: 14,
         ),
       ),
     );
   }
-
 
   Widget _buildPriceRow(Product product) {
     return Row(
