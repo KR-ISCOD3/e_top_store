@@ -1,3 +1,4 @@
+import 'package:e_top_store/data/services/auth_service.dart';
 import 'package:flutter/material.dart';
 
 import '../home/home_screen.dart';
@@ -5,6 +6,9 @@ import '../explore/explore_screen.dart';
 import '../cart/cart_screen.dart';
 import '../favourite/favourite_screen.dart';
 import '../profile/profile_screen.dart';
+
+import '../auth/login_screen.dart';
+import '../profile/guest_account_screen.dart';
 
 class MainLayout extends StatefulWidget {
   const MainLayout({super.key});
@@ -51,9 +55,12 @@ class _MainLayoutState extends State<MainLayout> {
           },
         );
 
-      case 4:
+     case 4:
+        if (!AuthService.isLoggedIn) {
+          return const GuestAccountScreen(); // 👈 REAL WORLD
+        }
         return const ProfileScreen();
-
+        
       default:
         return HomeScreen(onOpenCart: openCart);
     }
@@ -68,10 +75,19 @@ class _MainLayoutState extends State<MainLayout> {
         type: BottomNavigationBarType.fixed,
         selectedItemColor: Colors.black,
         unselectedItemColor: Colors.grey,
-        onTap: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
+        onTap: (index) async {
+            if (index == 4 && !AuthService.isLoggedIn) {
+              await Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const LoginScreen()),
+              );
+              setState(() {}); // 🔁 refresh after login
+              return;
+            }
+
+            setState(() {
+              _selectedIndex = index;
+            });
         },
         items: const [
           BottomNavigationBarItem(
