@@ -16,39 +16,53 @@ class MainLayout extends StatefulWidget {
 class _MainLayoutState extends State<MainLayout> {
   int _selectedIndex = 0;
 
-  // ✅ Initialize immediately (NO late)
-  late final List<Widget> _pages = [
-    const HomeScreen(),
-    const ExploreScreen(),
-    const CartScreen(),
+  /// 🔹 Switch to Cart tab
+  void openCart() {
+    setState(() {
+      _selectedIndex = 2;
+    });
+  }
 
-    FavouriteScreen(
-      onBack: () {
-        // this will be replaced safely later
-      },
-    ),
+  Widget _buildPage(int index) {
+    switch (index) {
+      case 0:
+        return HomeScreen(
+          onOpenCart: openCart, // ✅ PASS CALLBACK
+        );
 
-    const ProfileScreen(),
-  ];
+      case 1:
+        return const ExploreScreen();
 
-  @override
-  void initState() {
-    super.initState();
+      case 2:
+        return CartScreen(
+          onBack: () {
+            setState(() {
+              _selectedIndex = 0; // ✅ back to Home
+            });
+          },
+        );
 
-    // ✅ Replace FavouriteScreen with correct callback
-    _pages[3] = FavouriteScreen(
-      onBack: () {
-        setState(() {
-          _selectedIndex = 0; // back to Home tab
-        });
-      },
-    );
+      case 3:
+        return FavouriteScreen(
+          onBack: () {
+            setState(() {
+              _selectedIndex = 0;
+            });
+          },
+        );
+
+      case 4:
+        return const ProfileScreen();
+
+      default:
+        return HomeScreen(onOpenCart: openCart);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(index: _selectedIndex, children: _pages),
+      body: _buildPage(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         type: BottomNavigationBarType.fixed,

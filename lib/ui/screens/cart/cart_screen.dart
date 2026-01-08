@@ -1,39 +1,89 @@
 import 'package:flutter/material.dart';
+import '../../../data/models/cart_item.dart';
+import '../../../data/services/cart_service.dart';
 
-class CartScreen extends StatelessWidget {
-  const CartScreen({super.key});
+class CartScreen extends StatefulWidget {
+  final VoidCallback onBack;
+
+  const CartScreen({super.key, required this.onBack});
+
+  @override
+  State<CartScreen> createState() => _CartScreenState();
+}
+
+class _CartScreenState extends State<CartScreen> {
+  List<CartItem> cart = [];
+
+  @override
+  void initState() {
+    super.initState();
+    loadCart();
+  }
+
+  Future<void> loadCart() async {
+    cart = await CartService.getCart();
+    setState(() {});
+  }
+
+  double get subTotal => cart.fold(0, (sum, e) => sum + e.price * e.quantity);
+  double get shipping => cart.isEmpty ? 0 : 10;
+  double get total => subTotal + shipping;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: widget.onBack, // ✅ CORRECT BACK
+        ),
+        title: const Text(
+          'Cart List',
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        actions: const [
+          Padding(
+            padding: EdgeInsets.only(right: 16),
+            child: Icon(Icons.chat_bubble_outline, color: Colors.black),
+          ),
+        ],
+      ),
       body: SafeArea(
         child: Column(
           children: [
-            // ===== TOP BAR =====
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              child: Row(
-                children: [
-                  // const Spacer(),
-                  const Text(
-                    'Cart List',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                  ),
-                  const Spacer(),
-                  const Icon(Icons.chat_bubble_outline, size: 22),
-                ],
-              ),
-            ),
-
             const Divider(height: 1, thickness: 0.8),
 
             // ===== CART ITEMS =====
             Expanded(
-              child: ListView(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                children: const [_CartItem(), _CartItem(), _CartItem()],
-              ),
+              child: cart.isEmpty
+                  ? const Center(child: Text("Your cart is empty"))
+                  : ListView.builder(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      itemCount: cart.length,
+                      itemBuilder: (context, index) {
+                        return _CartItem(
+                          item: cart[index],
+                          onQtyChanged: (qty) async {
+                            await CartService.updateQuantity(
+                              cart[index].id,
+                              qty,
+                            );
+                            loadCart();
+                          },
+                          onDelete: () async {
+                            await CartService.removeItem(cart[index].id);
+                            loadCart();
+                          },
+                        );
+                      },
+                    ),
             ),
 
             // ===== SUMMARY =====
@@ -54,18 +104,24 @@ class CartScreen extends StatelessWidget {
                 ],
               ),
               child: Column(
-                children: const [
-                  _SummaryRow(label: 'Sub Total', value: '\$1,050'),
-                  SizedBox(height: 6),
-                  _SummaryRow(label: 'Shipping', value: '\$10'),
-                  Divider(height: 24),
+                children: [
+                  _SummaryRow(
+                    label: 'Sub Total',
+                    value: '\$${subTotal.toStringAsFixed(2)}',
+                  ),
+                  const SizedBox(height: 6),
+                  _SummaryRow(
+                    label: 'Shipping',
+                    value: '\$${shipping.toStringAsFixed(2)}',
+                  ),
+                  const Divider(height: 24),
                   _SummaryRow(
                     label: 'Total Amount',
-                    value: '\$1,060',
+                    value: '\$${total.toStringAsFixed(2)}',
                     bold: true,
                   ),
-                  SizedBox(height: 16),
-                  _CheckoutButton(),
+                  const SizedBox(height: 16),
+                  const _CheckoutButton(),
                 ],
               ),
             ),
@@ -79,7 +135,15 @@ class CartScreen extends StatelessWidget {
 /* ================= CART ITEM ================= */
 
 class _CartItem extends StatelessWidget {
-  const _CartItem();
+  final CartItem item;
+  final Function(int qty) onQtyChanged;
+  final VoidCallback onDelete;
+
+  const _CartItem({
+    required this.item,
+    required this.onQtyChanged,
+    required this.onDelete,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +160,12 @@ class _CartItem extends StatelessWidget {
               color: Colors.grey.shade100,
               borderRadius: BorderRadius.circular(8),
             ),
-            child: const Icon(Icons.laptop, size: 40, color: Colors.grey),
+            child: Image.network(
+              item.image,
+              fit: BoxFit.cover,
+              errorBuilder: (_, __, ___) =>
+                  const Icon(Icons.laptop, size: 40, color: Colors.grey),
+            ),
           ),
 
           const SizedBox(width: 12),
@@ -106,9 +175,12 @@ class _CartItem extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Kon Khmer laptop',
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                Text(
+                  item.name,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
                 const SizedBox(height: 4),
                 const Text(
@@ -116,9 +188,9 @@ class _CartItem extends StatelessWidget {
                   style: TextStyle(fontSize: 12, color: Colors.grey),
                 ),
                 const SizedBox(height: 6),
-                const Text(
-                  '\$350.00',
-                  style: TextStyle(
+                Text(
+                  '\$${item.price.toStringAsFixed(2)}',
+                  style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
                     color: Colors.red,
@@ -130,20 +202,47 @@ class _CartItem extends StatelessWidget {
 
           // ACTIONS
           Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              const Icon(Icons.more_vert, size: 20),
-              const SizedBox(height: 8),
+              // 🗑 DELETE
+              GestureDetector(
+                onTap: onDelete,
+                child: Container(
+                  padding: const EdgeInsets.all(6),
+                  decoration: BoxDecoration(
+                    color: Colors.red.withOpacity(0.1),
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.delete_outline,
+                    size: 18,
+                    color: Colors.red,
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 12),
+
+              // QTY
               Row(
-                children: const [
-                  _QtyButton(icon: Icons.remove),
+                children: [
+                  _QtyButton(
+                    icon: Icons.remove,
+                    onTap: item.quantity > 1
+                        ? () => onQtyChanged(item.quantity - 1)
+                        : null,
+                  ),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8),
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: Text(
-                      '1',
-                      style: TextStyle(fontWeight: FontWeight.w600),
+                      item.quantity.toString(),
+                      style: const TextStyle(fontWeight: FontWeight.w600),
                     ),
                   ),
-                  _QtyButton(icon: Icons.add),
+                  _QtyButton(
+                    icon: Icons.add,
+                    onTap: () => onQtyChanged(item.quantity + 1),
+                  ),
                 ],
               ),
             ],
@@ -156,18 +255,23 @@ class _CartItem extends StatelessWidget {
 
 class _QtyButton extends StatelessWidget {
   final IconData icon;
-  const _QtyButton({required this.icon});
+  final VoidCallback? onTap;
+
+  const _QtyButton({required this.icon, this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 28,
-      height: 28,
-      decoration: BoxDecoration(
-        color: Colors.grey.shade200,
-        shape: BoxShape.circle,
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 28,
+        height: 28,
+        decoration: BoxDecoration(
+          color: Colors.grey.shade200,
+          shape: BoxShape.circle,
+        ),
+        child: Icon(icon, size: 16),
       ),
-      child: Icon(icon, size: 16),
     );
   }
 }

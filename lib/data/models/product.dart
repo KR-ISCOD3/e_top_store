@@ -20,18 +20,18 @@ class Product {
   });
 
   factory Product.fromJson(Map<String, dynamic> json) {
-    final price = double.parse(json['price'].toString());
-    final discount = json['discount'] ?? 0;
+    final price = double.tryParse(json['price']?.toString() ?? '0') ?? 0;
+    final discount = double.tryParse(json['discount']?.toString() ?? '0') ?? 0;
 
     return Product(
-      id: json['id'],
-      brand: json['brand_name'],
-      title: json['name'],
-      description: json['description'],
-      imageUrl: json['thumbnail'],
+      id: json['id'] ?? 0,
+      brand: json['brand_name'] ?? 'Unknown', // ✅ FIX
+      title: json['name'] ?? '', // ✅ FIX
+      description: json['description'] ?? '', // ✅ FIX
+      imageUrl: json['thumbnail'] ?? '', // ✅ FIX
       price: price,
       oldPrice: discount > 0 ? price + discount : price,
-      rating: null, // ❌ backend not ready yet
+      rating: null,
     );
   }
 }
