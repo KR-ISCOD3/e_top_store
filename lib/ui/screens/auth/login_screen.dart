@@ -1,4 +1,5 @@
 import 'package:e_top_store/data/services/auth_service.dart';
+import 'package:e_top_store/data/services/google_auth_service.dart';
 import 'package:e_top_store/ui/screens/auth/signup_screen.dart';
 import 'package:e_top_store/ui/screens/main/main_layout.dart';
 import 'package:flutter/material.dart';
@@ -179,18 +180,44 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 20),
 
                 /// 🔹 Social login (ready)
-                Row(
+               Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    _socialButton(
-                      child: Image.asset(
-                        'assets/images/google_icon.png',
-                        width: 24,
-                        height: 24,
+                    GestureDetector(
+                      onTap: () async {
+                        setState(() => _loading = true);
+
+                        final success = await GoogleAuthService.signInWithGoogle();
+
+                        setState(() => _loading = false);
+
+                        if (success && context.mounted) {
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const MainLayout(),
+                            ),
+                            (route) => false,
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text("Google sign-in failed"),
+                            ),
+                          );
+                        }
+                      },
+                      child: _socialButton(
+                        child: Image.asset(
+                          'assets/images/google_icon.png',
+                          width: 24,
+                          height: 24,
+                        ),
                       ),
                     ),
                   ],
                 ),
+
 
                 const SizedBox(height: 40),
               ],

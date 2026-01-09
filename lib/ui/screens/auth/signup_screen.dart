@@ -66,7 +66,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                 ),
 
-                const SizedBox(height: 60),
+                const SizedBox(height: 40),
 
                 /// 🔹 NAME
                 _inputField("Full Name", controller: nameCtrl),
@@ -149,7 +149,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                 ),
 
-                const SizedBox(height: 40),
+                // const SizedBox(height: 10),
 
                 const Center(
                   child: Text(
@@ -168,10 +168,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   children: [
                     GestureDetector(
                       onTap: () async {
-                        final success =
-                            await GoogleAuthService.signInWithGoogle();
+                        final success = await GoogleAuthService.signInWithGoogle();
                         if (success && context.mounted) {
-                          Navigator.pop(context);
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(builder: (_) => const MainLayout()),
+                            (route) => false,
+                          );
                         }
                       },
                       child: _socialButton(
