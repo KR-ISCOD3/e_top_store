@@ -1,5 +1,5 @@
 class CartItem {
-  final int id;
+  final int id; // laptop_id
   final String name;
   final String image;
   final double price;
@@ -25,7 +25,7 @@ class CartItem {
         id: json['id'],
         name: json['name'],
         image: json['image'],
-        price: json['price'],
+        price: (json['price'] as num).toDouble(), // ✅ FIX
         quantity: json['quantity'],
       );
 }

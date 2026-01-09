@@ -1,6 +1,8 @@
 import 'package:e_top_store/ui/screens/main/main_layout.dart';
 import 'package:flutter/material.dart';
-// import 'package:e_top_store/ui/screens/home/home_screen.dart';
+
+// ✅ ADD THIS (GLOBAL)
+final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 
 void main() {
   runApp(const MyApp());
@@ -11,9 +13,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: MainLayout(),
+
+      // ✅ REGISTER OBSERVER HERE
+      navigatorObservers: [routeObserver],
+
+      home: const MainLayout(),
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:e_top_store/data/store/favorite_store.dart';
 import 'package:flutter/material.dart';
 import '../../../data/models/product.dart';
 
@@ -11,13 +12,14 @@ class FavouriteScreen extends StatefulWidget {
 }
 
 class _FavouriteScreenState extends State<FavouriteScreen> {
-  List<Product> _favorites = [];
+  List<Product> get _favorites => FavoriteStore.favorites;
 
   void _removeFavorite(Product product) {
     setState(() {
-      _favorites.removeWhere((p) => p.title == product.title);
+      FavoriteStore.toggle(product);
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +30,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
           children: [
             // ===== TOP BAR =====
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              padding: const EdgeInsets.fromLTRB(16, 12, 16, 20),
               child: Row(
                 children: [
                   GestureDetector(
@@ -52,12 +54,40 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
               child: _favorites.isEmpty
                   ? _emptyState()
                   : ListView.builder(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      itemCount: _favorites.length,
-                      itemBuilder: (context, index) {
-                        return _buildFavoriteCard(_favorites[index]);
-                      },
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                itemCount: _favorites.length,
+                itemBuilder: (context, index) {
+                  final product = _favorites[index];
+
+                  return Dismissible(
+                    key: ValueKey(product.id), // ✅ unique key
+                    direction: DismissDirection.endToStart, // swipe left
+                    background: Container(
+                      alignment: Alignment.centerRight,
+                      padding: const EdgeInsets.only(right: 20),
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                      ),
+                      child: const Icon(
+                        Icons.delete,
+                        color: Colors.white,
+                        size: 28,
+                      ),
                     ),
+                    onDismissed: (_) {
+                      setState(() {
+                        _favorites.removeAt(index);
+                      });
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Removed from favorites')),
+                      );
+                    },
+                    child: _buildFavoriteCard(product),
+                  );
+                },
+              )
+
             ),
           ],
         ),
@@ -74,23 +104,37 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // IMAGE + HEART
-              Stack(
-                children: [
-                  Container(
-                    width: 70,
-                    height: 70,
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade100,
-                      borderRadius: BorderRadius.circular(8),
+            Stack(
+              children: [
+                Container(
+                  width: 70,
+                  height: 70,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade100,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.network(
+                      product.imageUrl,
+                      fit: BoxFit.contain,
+                      errorBuilder: (_, __, ___) =>
+                          const Icon(Icons.image_not_supported),
                     ),
                   ),
-                  const Positioned(
-                    top: 0,
-                    left: 0,
-                    child: Icon(Icons.favorite, color: Colors.red, size: 16),
+                ),
+                const Positioned(
+                  top: 0,
+                  left: 0,
+                  child: Icon(
+                    Icons.favorite,
+                    color: Colors.red,
+                    size: 16,
                   ),
-                ],
-              ),
+                ),
+              ],
+            ),
+
 
               const SizedBox(width: 12),
 

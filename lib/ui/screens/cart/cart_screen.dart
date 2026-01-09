@@ -3,19 +3,21 @@ import '../../../data/models/cart_item.dart';
 import '../../../data/services/cart_service.dart';
 import 'package:e_top_store/data/services/auth_service.dart';
 import '../auth/login_screen.dart';
+import '../checkout/checkout_screen.dart';
+import 'package:e_top_store/main.dart';
 
 class CartScreen extends StatefulWidget {
   final VoidCallback onBack;
-
+  
   const CartScreen({super.key, required this.onBack});
 
   @override
   State<CartScreen> createState() => _CartScreenState();
 }
 
-class _CartScreenState extends State<CartScreen> {
+class _CartScreenState extends State<CartScreen> with RouteAware {
   List<CartItem> cart = [];
-
+  
   @override
   void initState() {
     super.initState();
@@ -30,7 +32,23 @@ class _CartScreenState extends State<CartScreen> {
   double get subTotal => cart.fold(0, (sum, e) => sum + e.price * e.quantity);
   double get shipping => cart.isEmpty ? 0 : 10;
   double get total => subTotal + shipping;
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    routeObserver.subscribe(this, ModalRoute.of(context)! as PageRoute);
+  }
 
+  @override
+  void dispose() {
+    routeObserver.unsubscribe(this);
+    super.dispose();
+  }
+
+  // 🔥 Called when coming back from another screen
+  @override
+  void didPopNext() {
+    loadCart(); // reload cart after checkout
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -123,7 +141,10 @@ class _CartScreenState extends State<CartScreen> {
                     bold: true,
                   ),
                   const SizedBox(height: 16),
-                  const _CheckoutButton(),
+                  _CheckoutButton(
+                    subtotal: subTotal,
+                    hasItems: cart.isNotEmpty, // 👈 THIS IS THE KEY
+                  ),
                 ],
               ),
             ),
@@ -315,7 +336,9 @@ class _SummaryRow extends StatelessWidget {
 }
 
 class _CheckoutButton extends StatelessWidget {
-  const _CheckoutButton();
+  final double subtotal;
+  final bool hasItems;
+  const _CheckoutButton({required this.subtotal, required this.hasItems});
 
   @override
   Widget build(BuildContext context) {
@@ -324,44 +347,38 @@ class _CheckoutButton extends StatelessWidget {
       height: 48,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.black,
+          backgroundColor: hasItems ? Colors.black : Colors.grey,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
           ),
         ),
-        onPressed: () async {
-          // 🔐 CHECK LOGIN
-          if (!AuthService.isLoggedIn) {
-            await Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => const LoginScreen(),
-              ),
-            );
 
-            // after login → recheck
-            if (!AuthService.isLoggedIn) return;
-          }
+        onPressed: !hasItems
+            ? null // ❌ DISABLED WHEN CART EMPTY
+            : () async {
+                // 🔐 CHECK LOGIN
+                if (!AuthService.isLoggedIn) {
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const LoginScreen()),
+                  );
+                  if (!AuthService.isLoggedIn) return;
+                }
 
-          // ✅ USER LOGGED IN → CONTINUE CHECKOUT
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text("Proceed to checkout 🚀"),
-            ),
-          );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => CheckoutScreen(subtotal: subtotal),
+                  ),
+                );
+              },
 
-          // TODO: Navigate to checkout screen
-          // Navigator.push(context,
-          //   MaterialPageRoute(builder: (_) => const CheckoutScreen()));
-        },
         child: const Text(
           'Check Out',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.w600,
-          ),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
         ),
       ),
+
     );
   }
 }

@@ -7,7 +7,7 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../widgets/language_screen.dart';
-
+import '../../../data/store/favorite_store.dart';
 import '../../../data/models/product.dart';
 import '../../../data/models/brand.dart';
 
@@ -82,15 +82,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> _loadProducts() async {
     try {
-      final response = await http.get(
-        Uri.parse('http://10.0.2.2:5000/api/laptops'),
-      );
+      final response =
+          await http.get(Uri.parse('http://10.0.2.2:5000/api/laptops'));
 
       if (response.statusCode == 200) {
-        final decoded = json.decode(response.body);
-
-        // ✅ FIX: read "data" key
-        final List list = decoded['data'];
+        final List list = json.decode(response.body); // ✅ FIX HERE
 
         setState(() {
           _allProducts = list.map((e) => Product.fromJson(e)).toList();
@@ -105,6 +101,7 @@ class _HomeScreenState extends State<HomeScreen> {
       _isLoading = false;
     }
   }
+
 
   void _applyFilters() {
     final query = _searchController.text.toLowerCase().trim();
@@ -482,10 +479,21 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ],
                     ),
-                    child: const Icon(
-                      Icons.favorite_border,
-                      size: 18,
-                      color: Colors.black54,
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          FavoriteStore.toggle(product);
+                        });
+                      },
+                      child: Icon(
+                        FavoriteStore.isFavorite(product)
+                            ? Icons.favorite
+                            : Icons.favorite_border,
+                        color: FavoriteStore.isFavorite(product)
+                            ? Colors.red
+                            : Colors.black54,
+                        size: 18,
+                      ),
                     ),
                   ),
                 ),

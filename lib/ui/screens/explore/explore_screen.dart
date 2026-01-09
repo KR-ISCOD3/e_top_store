@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
+import '../../../data/store/favorite_store.dart';
 
 class ExploreScreen extends StatefulWidget {
   const ExploreScreen({super.key});
@@ -327,7 +328,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                 _buildProductImage(product),
                 const SizedBox(width: 14),
                 Expanded(child: _buildProductInfo(product)),
-                _buildFavoriteButton(index),
+                _buildFavoriteButton(product),
               ],
             ),
           ),
@@ -437,24 +438,23 @@ class _ExploreScreenState extends State<ExploreScreen> {
     );
   }
 
-  Widget _buildFavoriteButton(int index) {
+  Widget _buildFavoriteButton(Product product) {
     return IconButton(
       icon: Icon(
-        _favorites.contains(index) ? Icons.favorite : Icons.favorite_border,
-        color: _favorites.contains(index)
+        FavoriteStore.isFavorite(product)
+            ? Icons.favorite
+            : Icons.favorite_border,
+        color: FavoriteStore.isFavorite(product)
             ? const Color(0xFFFF4444)
             : const Color(0xFFCCCCCC),
         size: 22,
       ),
       onPressed: () {
         setState(() {
-          if (_favorites.contains(index)) {
-            _favorites.remove(index);
-          } else {
-            _favorites.add(index);
-          }
+          FavoriteStore.toggle(product);
         });
       },
     );
   }
+
 }

@@ -63,4 +63,10 @@ class CartService {
       json.encode(cart.map((e) => e.toJson()).toList()),
     );
   }
+
+  // Clear cart
+  static Future<void> clear() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_cartKey);
+  }
 }
