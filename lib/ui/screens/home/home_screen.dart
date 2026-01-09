@@ -272,14 +272,6 @@ class _HomeScreenState extends State<HomeScreen> {
             color: Colors.black87,
           ),
         ),
-        Text(
-          "See all",
-          style: TextStyle(
-            color: Colors.red.shade600,
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
       ],
     );
   }

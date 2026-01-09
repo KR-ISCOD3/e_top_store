@@ -1,4 +1,5 @@
 import 'package:e_top_store/data/models/product.dart';
+import 'package:e_top_store/ui/screens/detail/product_detail.dart';
 import 'package:e_top_store/ui/widgets/notifications_screen.dart';
 import 'package:e_top_store/ui/widgets/top_search_bar.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +9,12 @@ import 'package:http/http.dart' as http;
 import '../../../data/store/favorite_store.dart';
 
 class ExploreScreen extends StatefulWidget {
-  const ExploreScreen({super.key});
+  final VoidCallback onOpenCart;
+
+  const ExploreScreen({
+    super.key,
+    required this.onOpenCart,
+  });
 
   @override
   State<ExploreScreen> createState() => _ExploreScreenState();
@@ -318,7 +324,15 @@ class _ExploreScreenState extends State<ExploreScreen> {
         child: InkWell(
           borderRadius: BorderRadius.circular(16),
           onTap: () {
-            // TODO: Navigate to product detail
+             Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => ProductDetailScreen(
+                  laptopId: product.id,
+                  onOpenCart: widget.onOpenCart,
+                )
+              ),
+            );
           },
           child: Padding(
             padding: const EdgeInsets.all(14),
