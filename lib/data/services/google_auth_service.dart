@@ -10,7 +10,7 @@ import 'user_session.dart';
 class GoogleAuthService {
   static final GoogleSignIn _googleSignIn = GoogleSignIn(
   scopes: ['email', 'profile'],
-  serverClientId:'827259358924-hbpcejiqe14fqq0uu810ol56clars48s.apps.googleusercontent.com', // 👈 WEB CLIENT ID
+  serverClientId:'', // 👈 WEB CLIENT ID
 );
 
   static Future<bool> signInWithGoogle() async {
