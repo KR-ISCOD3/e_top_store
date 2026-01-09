@@ -2,7 +2,8 @@ import 'package:e_top_store/data/services/auth_service.dart';
 import 'package:e_top_store/data/services/user_session.dart';
 import 'package:e_top_store/ui/screens/main/main_layout.dart';
 import 'package:flutter/material.dart';
-
+import 'package:e_top_store/ui/screens/favourite/favourite_screen.dart';
+import 'package:e_top_store/ui/widgets/help_center_screen.dart';
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
@@ -63,11 +64,23 @@ class ProfileScreen extends StatelessWidget {
                       mainAxisSpacing: 12,
                       crossAxisSpacing: 12,
                       childAspectRatio: 1.4,
-                      children: const [
+                      children:[
                         _ActionCard(icon: Icons.receipt_long, label: 'Orders'),
                         _ActionCard(
                           icon: Icons.favorite_border,
                           label: 'Favorites',
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => FavouriteScreen(
+                                  onBack: () {
+                                    Navigator.pop(context); // 👈 close favorites
+                                  },
+                                ),
+                              ),
+                            );
+                          },
                         ),
                         _ActionCard(icon: Icons.credit_card, label: 'Payments'),
                         _ActionCard(
@@ -90,7 +103,18 @@ class ProfileScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
 
-                    _ListItem(icon: Icons.help_outline, label: 'Help Center'),
+                     _ListItem(
+                      icon: Icons.help_outline,
+                      label: 'Help Center',
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const HelpCenterScreen(),
+                          ),
+                        );
+                      },
+                    ),
                     _ListItem(
                       icon: Icons.description_outlined,
                       label: 'Terms & policies',
@@ -158,41 +182,58 @@ class ProfileScreen extends StatelessWidget {
 class _ActionCard extends StatelessWidget {
   final IconData icon;
   final String label;
+  final VoidCallback? onTap;
 
-  const _ActionCard({required this.icon, required this.label});
+  const _ActionCard({
+    required this.icon,
+    required this.label,
+    this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey.shade300),
-        borderRadius: BorderRadius.circular(12),
-      ),
+    return Material( // ✅ REQUIRED
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(12),
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
-        onTap: () {},
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon, size: 26),
-            const SizedBox(height: 8),
-            Text(
-              label,
-              style:
-                  const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-            ),
-          ],
+        onTap: onTap,
+        child: Container(
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey.shade300),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(icon, size: 26),
+              const SizedBox(height: 8),
+              Text(
+                label,
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 }
 
+
 class _ListItem extends StatelessWidget {
   final IconData icon;
   final String label;
+  final VoidCallback? onTap; // ✅ add this
 
-  const _ListItem({required this.icon, required this.label});
+  const _ListItem({
+    required this.icon,
+    required this.label,
+    this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -201,7 +242,8 @@ class _ListItem extends StatelessWidget {
       leading: Icon(icon),
       title: Text(label, style: const TextStyle(fontSize: 14)),
       trailing: const Icon(Icons.chevron_right),
-      onTap: () {},
+      onTap: onTap, // ✅ use it
     );
   }
 }
+

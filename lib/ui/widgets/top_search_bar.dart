@@ -60,46 +60,7 @@ class TopSearchBar extends StatelessWidget {
             ),
           ),
         ),
-
         const SizedBox(width: 12),
-
-        // 🌐 LANGUAGE SWITCH
-        GestureDetector(
-          onTap: () async {
-            final result = await Navigator.of(context).push<bool>(
-              MaterialPageRoute(
-                builder: (_) => LanguageScreen(initialIsKhmer: lang == 'km'),
-              ),
-            );
-            if (result != null) {
-              onLanguageChanged(result ? 'km' : 'en');
-            }
-          },
-          child: Container(
-            width: 44,
-            height: 44,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.04),
-                  blurRadius: 10,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
-            child: Center(
-              child: Text(
-                lang == 'en' ? '🇺🇸' : '🇰🇭',
-                style: const TextStyle(fontSize: 18),
-              ),
-            ),
-          ),
-        ),
-
-        const SizedBox(width: 12),
-
         // 🔔 NOTIFICATION
         GestureDetector(
           onTap: onNotificationTap,
